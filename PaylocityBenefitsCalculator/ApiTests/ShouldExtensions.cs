@@ -29,4 +29,3 @@ internal static class ShouldExtensions
         Assert.Equal(expectedStatusCode, response.StatusCode);
     }
 }
-

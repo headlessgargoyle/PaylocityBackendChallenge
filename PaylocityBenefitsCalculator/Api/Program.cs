@@ -1,3 +1,4 @@
+using Api.Dal;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +19,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// often this is AddScoped, but Singleton is required here for persistence
+builder.Services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddSingleton<IDependentRepository, DependentRepository>();
+
 var allowLocalhost = "allow localhost";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(allowLocalhost,
         policy => { policy.WithOrigins("http://localhost:3000", "http://localhost"); });
 });
+
+// Could easily integrate OTEL for monitoring right here
 
 var app = builder.Build();
 
